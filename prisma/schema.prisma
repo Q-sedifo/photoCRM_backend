@@ -23,6 +23,9 @@ model Admin {
   id           Int      @id @default(autoincrement())
   email        String   @unique
   passwordHash String
+
+  refreshToken String?
+
   createdAt    DateTime @default(now())
 }
 
