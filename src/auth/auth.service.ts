@@ -2,6 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
+import { LoginDto } from './dto/login.dto';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -10,7 +12,7 @@ export class AuthService {
     private jwt: JwtService,
   ) {}
 
-  async login(dto: { email: string; password: string }, res: any) {
+  async login(dto: LoginDto, res: Response) {
     const admin = await this.prisma.admin.findUnique({
       where: { email: dto.email },
     });
@@ -80,7 +82,7 @@ export class AuthService {
     return admin;
   }
 
-  async logout(req: any, res: any) {
+  async logout(req: any, res: Response) {
     const token = req.cookies?.refresh_token;
 
     if (token) {
@@ -100,7 +102,7 @@ export class AuthService {
     return { success: true };
   }
 
-  async refresh(req: any, res: any) {
+  async refresh(req: any, res: Response) {
     const token = req.cookies?.refresh_token;
 
     if (!token) {

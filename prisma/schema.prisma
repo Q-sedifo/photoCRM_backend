@@ -41,11 +41,23 @@ model Booking {
   updatedAt DateTime @updatedAt
 }
 
-model Gallery {
+model GalleryCategory {
   id        Int      @id @default(autoincrement())
-
-  imageUrl  String
-  title     String?
-
+  title     String
+  slug      String   @unique
+  coverUrl  String?
   createdAt DateTime @default(now())
+
+  photos    Photo[]
+}
+
+model Photo {
+  id          Int      @id @default(autoincrement())
+  imageUrl    String
+  publicId    String
+  alt         String?
+  createdAt   DateTime @default(now())
+
+  categoryId  Int
+  category    GalleryCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }
